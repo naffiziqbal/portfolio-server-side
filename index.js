@@ -19,28 +19,35 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const postCollection = client.db("portfolio").collection("posts");
-    const userCollection = client.db("portfolio").collection('user')
+    const userCollection = client.db("portfolio").collection("user");
 
     app.get("/posts", async (req, res) => {
       const query = {};
       const cursor = await postCollection.find(query).toArray();
       res.send(cursor);
     });
-    app.get('/post/:id', async(req,res)=>{
+    app.get("/post/:id", async (req, res) => {
       const id = req.params.id;
-      const query = { _id : ObjectId(id)};
+      const query = { _id: ObjectId(id) };
       const result = await postCollection.findOne(query);
-      res.send(result)
-    })
+      res.send(result);
+    });
 
     app.get("/user", async (req, res) => {
       const query = {};
       const user = await userCollection.findOne(query);
-      res.send(user)
+      res.send(user);
     });
     app.post("/post", async (req, res) => {
       const postData = req.body;
       const result = await postCollection.insertOne(postData);
+      res.send(result);
+    });
+
+    app.delete("/delete/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = postCollection.deleteOne(query);
       res.send(result);
     });
   } finally {
