@@ -67,6 +67,13 @@ async function run() {
     app.delete("/delete/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
+      const result = worksCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    app.delete("/delete/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
       const result = postCollection.deleteOne(query);
       res.send(result);
     });
